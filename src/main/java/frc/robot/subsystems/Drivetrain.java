@@ -4,7 +4,6 @@ import static frc.robot.Constants.DrivetrainConstants.*;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -50,9 +49,5 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("LBMotorVoltage", leftRear.getBusVoltage());
-    SmartDashboard.putNumber("LFMotorVoltage", leftFront.getBusVoltage());
-    SmartDashboard.putNumber("RBMotorVoltage", rightRear.getBusVoltage());
-    SmartDashboard.putNumber("RFMotorVoltage", rightFront.getBusVoltage());
   }
 }
