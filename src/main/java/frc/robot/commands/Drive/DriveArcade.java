@@ -21,8 +21,8 @@ public class DriveArcade extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.driveArcade(-(RobotContainer.getInstance().getdriverJoystick().getRawAxis(1)),
-        RobotContainer.getInstance().getdriverJoystick().getRawAxis(0));
+    m_drivetrain.driveArcade(-(RobotContainer.getInstance().getdriverJoystick().getRawAxis(5)),
+    RobotContainer.getInstance().getdriverJoystick().getRawAxis(1));
   }
 
   // Returns true when the command should end.

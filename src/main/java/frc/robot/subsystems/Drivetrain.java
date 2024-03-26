@@ -1,18 +1,23 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.DrivetrainConstants.*;
+import static frc.robot.Constants.DrivetrainConstants.kLeftFrontID;
+import static frc.robot.Constants.DrivetrainConstants.kLeftRearID;
+import static frc.robot.Constants.DrivetrainConstants.kRightFrontID;
+import static frc.robot.Constants.DrivetrainConstants.kRightRearID;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
 
   private WPI_VictorSPX leftFront;
   private WPI_VictorSPX leftRear;
-  private DifferentialDrive m_drivetrain;
   private WPI_VictorSPX rightFront;
   private WPI_VictorSPX rightRear;
+  private DifferentialDrive m_drivetrain;
 
   public Drivetrain() {
 
@@ -21,11 +26,17 @@ public class Drivetrain extends SubsystemBase {
     rightFront = new WPI_VictorSPX(kRightFrontID);
     rightRear = new WPI_VictorSPX(kRightRearID);
 
-    leftFront.setInverted(true);
-    rightFront.setInverted(false);
+    leftFront.setInverted(false);
+    rightFront.setInverted(true);
+
+    leftRear.setInverted(true);
+    rightRear.setInverted(true);
 
     rightRear.follow(rightFront);
     leftRear.follow(leftFront);
+
+    rightFront.setInverted(true);
+    leftFront.setInverted(true);
 
     m_drivetrain = new DifferentialDrive(leftFront, rightFront);
     m_drivetrain.setSafetyEnabled(true);
@@ -33,8 +44,8 @@ public class Drivetrain extends SubsystemBase {
     m_drivetrain.setMaxOutput(1.0);
   }
 
-  public void driveArcade(double speed, double rotation) {
-    m_drivetrain.arcadeDrive(speed, rotation);
+  public void driveArcade(double leftStick, double rightStick) {
+    m_drivetrain.tankDrive(leftStick, rightStick);
   }
 
   public void driveBack(double speed) {
@@ -49,5 +60,9 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+     SmartDashboard.putNumber("LeftRear", leftRear.get());
+     SmartDashboard.putNumber("LeftFront", leftFront.get());
+     SmartDashboard.putNumber("RightRear", rightRear.get());
+     SmartDashboard.putNumber("RightFront", rightFront.get());
   }
 }
