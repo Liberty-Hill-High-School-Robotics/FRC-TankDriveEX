@@ -2,40 +2,36 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DrivetrainConstants.*;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
 
-  DifferentialDrive m_drivetrain;
-
-  private CANSparkMax leftFront;
-  private CANSparkMax leftRear;
-  private CANSparkMax rightFront;
-  private CANSparkMax rightRear;
+  private WPI_VictorSPX leftFront;
+  private WPI_VictorSPX leftRear;
+  private DifferentialDrive m_drivetrain;
+  private WPI_VictorSPX rightFront;
+  private WPI_VictorSPX rightRear;
 
   public Drivetrain() {
 
-    leftFront = new CANSparkMax(kLeftFrontID, MotorType.kBrushless);
-    leftFront.setSmartCurrentLimit(kCurrentLimit);
-    leftRear = new CANSparkMax(kLeftRearID, MotorType.kBrushless);
-    leftRear.setSmartCurrentLimit(kCurrentLimit);
-    rightFront = new CANSparkMax(kRightFrontID, MotorType.kBrushless);
-    rightFront.setSmartCurrentLimit(kCurrentLimit);
-    rightRear = new CANSparkMax(kRightRearID, MotorType.kBrushless);
-    rightRear.setSmartCurrentLimit(kCurrentLimit);
+    leftFront = new WPI_VictorSPX(kLeftFrontID);
+    leftRear = new WPI_VictorSPX(kLeftRearID);
+    rightFront = new WPI_VictorSPX(kRightFrontID);
+    rightRear = new WPI_VictorSPX(kRightRearID);
 
     leftFront.setInverted(true);
     rightFront.setInverted(false);
 
-    rightRear.follow(rightFront, false);
-    leftRear.follow(leftFront, false);
+    rightRear.follow(rightFront);
+    leftRear.follow(leftFront);
 
     m_drivetrain = new DifferentialDrive(leftFront, rightFront);
+    m_drivetrain.setSafetyEnabled(true);
+    m_drivetrain.setExpiration(0.1);
+    m_drivetrain.setMaxOutput(1.0);
   }
 
   public void driveArcade(double speed, double rotation) {
@@ -54,11 +50,6 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("LeftBackTemp", leftRear.getMotorTemperature());
-    SmartDashboard.putNumber("RightBackTemp", rightFront.getMotorTemperature());
-    SmartDashboard.putNumber("LeftFrontTemp", leftFront.getMotorTemperature());
-    SmartDashboard.putNumber("RightFrontTemp", rightFront.getMotorTemperature());
-
     SmartDashboard.putNumber("LBMotorVoltage", leftRear.getBusVoltage());
     SmartDashboard.putNumber("LFMotorVoltage", leftFront.getBusVoltage());
     SmartDashboard.putNumber("RBMotorVoltage", rightRear.getBusVoltage());
